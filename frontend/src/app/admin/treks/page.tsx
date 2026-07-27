@@ -19,7 +19,9 @@ export default function AdminTreksPage() {
     title: '', price: '', days: '', diff: '', category: '', description: ''
   });
   const [mainImage, setMainImage] = useState<File | null>(null);
-  const [galleryImages, setGalleryImages] = useState<FileList | null>(null);
+  const [galleryImage1, setGalleryImage1] = useState<File | null>(null);
+  const [galleryImage2, setGalleryImage2] = useState<File | null>(null);
+  const [galleryImage3, setGalleryImage3] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const fetchTreks = async () => {
@@ -63,7 +65,9 @@ export default function AdminTreksPage() {
       setFormData({ title: '', price: '', days: '', diff: '', category: '', description: '' });
     }
     setMainImage(null);
-    setGalleryImages(null);
+    setGalleryImage1(null);
+    setGalleryImage2(null);
+    setGalleryImage3(null);
     setIsModalOpen(true);
   };
 
@@ -75,9 +79,9 @@ export default function AdminTreksPage() {
     Object.entries(formData).forEach(([key, value]) => data.append(key, value));
 
     if (mainImage) data.append('image', mainImage);
-    if (galleryImages) {
-      Array.from(galleryImages).forEach(file => data.append('images', file));
-    }
+    if (galleryImage1) data.append('images', galleryImage1);
+    if (galleryImage2) data.append('images', galleryImage2);
+    if (galleryImage3) data.append('images', galleryImage3);
 
     try {
       if (editingTrek) {
@@ -228,20 +232,29 @@ export default function AdminTreksPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Images (Max 3)</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Image 1</label>
                     <input
                       type="file"
                       accept="image/*"
-                      multiple
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 3) {
-                          toast.error('You can only upload up to 3 gallery images.');
-                          e.target.value = '';
-                          setGalleryImages(null);
-                        } else {
-                          setGalleryImages(e.target.files);
-                        }
-                      }}
+                      onChange={(e) => setGalleryImage1(e.target.files?.[0] || null)}
+                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Image 2</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setGalleryImage2(e.target.files?.[0] || null)}
+                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Image 3</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setGalleryImage3(e.target.files?.[0] || null)}
                       className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
                     />
                   </div>
