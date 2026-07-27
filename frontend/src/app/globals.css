@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand-primary: #E11D48; /* Rose 600 */
+  --color-brand-primary-hover: #BE123C; /* Rose 700 */
+  --color-brand-secondary: #0F172A; /* Slate 900 */
+  --font-sans: var(--font-outfit), sans-serif;
+  --font-heading: var(--font-inter), sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0F172A; /* Slate 900 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617; /* Slate 950 */
+    --foreground: #f8fafc; /* Slate 50 */
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Swiper custom styles */
+.swiper-pagination-bullet-active {
+  background-color: var(--color-brand-primary) !important;
+}
