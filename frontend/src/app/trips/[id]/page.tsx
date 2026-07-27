@@ -65,14 +65,49 @@ export default function TripDetailsPage() {
             <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> {trip.rating}
           </div>
         </div>
-        <div className="hidden md:flex flex-col w-1/3 gap-2 h-full">
-          <div className="h-1/2 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center">
-             <span className="text-slate-400">More images coming soon</span>
+        {trip.images && trip.images.length > 0 ? (
+          <div className="hidden md:flex flex-col w-1/3 gap-2 h-full">
+            {trip.images.length === 1 && (
+              <div className="h-full rounded-2xl overflow-hidden relative">
+                <img src={trip.images[0]} alt="Gallery 1" className="w-full h-full object-cover" />
+              </div>
+            )}
+            {trip.images.length === 2 && (
+              <>
+                <div className="h-1/2 rounded-2xl overflow-hidden relative">
+                  <img src={trip.images[0]} alt="Gallery 1" className="w-full h-full object-cover" />
+                </div>
+                <div className="h-1/2 rounded-2xl overflow-hidden relative">
+                  <img src={trip.images[1]} alt="Gallery 2" className="w-full h-full object-cover" />
+                </div>
+              </>
+            )}
+            {trip.images.length >= 3 && (
+              <>
+                <div className="h-1/2 rounded-2xl overflow-hidden relative">
+                  <img src={trip.images[0]} alt="Gallery 1" className="w-full h-full object-cover" />
+                </div>
+                <div className="h-1/2 flex gap-2">
+                  <div className="w-1/2 rounded-2xl overflow-hidden relative">
+                    <img src={trip.images[1]} alt="Gallery 2" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="w-1/2 rounded-2xl overflow-hidden relative">
+                    <img src={trip.images[2]} alt="Gallery 3" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-          <div className="h-1/2 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center">
-             <span className="text-slate-400">More images coming soon</span>
+        ) : (
+          <div className="hidden md:flex flex-col w-1/3 gap-2 h-full">
+            <div className="h-1/2 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center">
+               <span className="text-slate-400">More images coming soon</span>
+            </div>
+            <div className="h-1/2 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center">
+               <span className="text-slate-400">More images coming soon</span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
