@@ -4,8 +4,8 @@ import Trek from '../models/trekModel';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 
-// Initialize Razorpay
-const razorpay = new Razorpay({
+// Helper to get initialized Razorpay (prevents undefined env vars during import)
+const getRazorpay = () => new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID as string,
   key_secret: process.env.RAZORPAY_KEY_SECRET as string,
 });
@@ -35,6 +35,7 @@ export const addBookingItems = async (req: Request, res: Response) => {
       receipt: `receipt_${Date.now()}`,
     };
 
+    const razorpay = getRazorpay();
     const order = await razorpay.orders.create(options);
 
     const booking = new Booking({

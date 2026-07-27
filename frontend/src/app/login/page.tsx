@@ -40,7 +40,11 @@ export default function LoginPage() {
       login(user, token);
       
       toast.success('Successfully logged in!');
-      router.push('/dashboard');
+      if (user.role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to login');
     }

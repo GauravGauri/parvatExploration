@@ -11,12 +11,14 @@ import { Menu, X, User } from 'lucide-react';
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
+  const { isAuthenticated, user, logout } = useAuthStore();
   const pathname = usePathname();
 
   const isHome = pathname === '/';
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -65,14 +67,27 @@ export function Navbar() {
             </div>
 
             <div className="flex items-center space-x-4">
-              {isAuthenticated ? (
+              {mounted && (isAuthenticated ? (
                 <>
-                  <Link href="/dashboard">
-                    <Button variant={isHome && !isScrolled ? 'outline' : 'ghost'} className={isHome && !isScrolled ? 'text-white border-white hover:bg-white/10' : ''}>
-                      <User className="w-4 h-4 mr-2" />
-                      Dashboard
-                    </Button>
-                  </Link>
+                  <div className={`flex items-center gap-2 mr-2 ${isHome && !isScrolled ? 'text-white' : 'text-slate-900'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${isHome && !isScrolled ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600'}`}>
+                      {user?.name?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                    <span className="font-semibold text-sm hidden lg:block">{user?.name}</span>
+                  </div>
+                  {user?.role === 'admin' ? (
+                    <Link href="/admin">
+                      <Button variant={isHome && !isScrolled ? 'outline' : 'ghost'} className={isHome && !isScrolled ? 'text-white border-white hover:bg-white/10' : ''}>
+                        Admin Panel
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link href="/dashboard">
+                      <Button variant={isHome && !isScrolled ? 'outline' : 'ghost'} className={isHome && !isScrolled ? 'text-white border-white hover:bg-white/10' : ''}>
+                        Dashboard
+                      </Button>
+                    </Link>
+                  )}
                   <Button variant="primary" onClick={logout}>
                     Logout
                   </Button>
@@ -88,7 +103,7 @@ export function Navbar() {
                     <Button variant="primary">Sign Up</Button>
                   </Link>
                 </>
-              )}
+              ))}
             </div>
           </div>
 
@@ -125,11 +140,26 @@ export function Navbar() {
                 </Link>
               ))}
               <div className="pt-4 mt-4 border-t border-slate-100 flex flex-col gap-3">
-                {isAuthenticated ? (
+                {mounted && (isAuthenticated ? (
                   <>
-                    <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Button className="w-full justify-center" variant="outline">Dashboard</Button>
-                    </Link>
+                    <div className="flex items-center gap-3 px-3 mb-2">
+                      <div className="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg">
+                        {user?.name?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900">{user?.name}</p>
+                        <p className="text-xs text-slate-500">{user?.email}</p>
+                      </div>
+                    </div>
+                    {user?.role === 'admin' ? (
+                      <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Button className="w-full justify-center" variant="outline">Admin Panel</Button>
+                      </Link>
+                    ) : (
+                      <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Button className="w-full justify-center" variant="outline">Dashboard</Button>
+                      </Link>
+                    )}
                     <Button className="w-full justify-center" variant="primary" onClick={() => { logout(); setIsMobileMenuOpen(false); }}>
                       Logout
                     </Button>
@@ -143,7 +173,7 @@ export function Navbar() {
                       <Button className="w-full justify-center" variant="primary">Sign Up</Button>
                     </Link>
                   </>
-                )}
+                ))}
               </div>
             </div>
           </motion.div>

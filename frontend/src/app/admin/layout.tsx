@@ -11,18 +11,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const { isAuthenticated, user, logout } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     if (!isAuthenticated) {
       router.push('/login');
     } else if (user?.role !== 'admin') {
       toast.error('Not authorized as an admin');
       router.push('/dashboard');
     }
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, user, router, mounted]);
 
-  if (!isAuthenticated || user?.role !== 'admin') {
-    return null; // Return null while checking auth
+  if (!mounted || !isAuthenticated || user?.role !== 'admin') {
+    return null; // Return null while checking auth and hydrating
   }
 
   const handleLogout = () => {
