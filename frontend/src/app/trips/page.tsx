@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { Search, MapPin, Star, Filter, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Loader } from '@/components/ui/Loader';
 
 import api from '@/lib/api';
 
@@ -144,7 +145,11 @@ function TripsContent() {
 
           {/* Grid */}
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTrips.length > 0 ? (
+            {loading ? (
+              <div className="col-span-full">
+                <Loader message="Loading trips..." />
+              </div>
+            ) : filteredTrips.length > 0 ? (
               filteredTrips.map((trek) => (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}

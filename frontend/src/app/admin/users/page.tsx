@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { Loader } from '@/components/ui/Loader';
 import { Trash2, UserCog, Shield } from 'lucide-react';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -52,7 +53,7 @@ export default function AdminUsersPage() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-full">Loading users...</div>;
+    return <Loader message="Loading users..." />;
   }
 
   return (

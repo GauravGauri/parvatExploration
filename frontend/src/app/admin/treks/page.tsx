@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Loader } from '@/components/ui/Loader';
 import { Trash2, Edit, Plus, X } from 'lucide-react';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -105,7 +106,7 @@ export default function AdminTreksPage() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-full">Loading treks...</div>;
+    return <Loader message="Loading treks..." />;
   }
 
   return (

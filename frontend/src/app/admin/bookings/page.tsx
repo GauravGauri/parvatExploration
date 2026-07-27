@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
 import { CheckCircle2, Clock } from 'lucide-react';
+import { Loader } from '@/components/ui/Loader';
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -26,13 +27,13 @@ export default function AdminBookingsPage() {
   }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-full">Loading bookings...</div>;
+    return <Loader message="Loading bookings..." />;
   }
 
   return (
     <div>
       <h1 className="text-3xl font-bold font-heading text-slate-900 mb-8">Manage Bookings</h1>
-      
+
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
@@ -60,9 +61,8 @@ export default function AdminBookingsPage() {
                   <td className="p-4 text-slate-600">{b.guests}</td>
                   <td className="p-4 font-medium text-slate-900">₹{b.totalAmount.toLocaleString('en-IN')}</td>
                   <td className="p-4">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
-                      b.paymentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                    }`}>
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                      }`}>
                       {b.paymentStatus === 'Paid' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                       {b.paymentStatus}
                     </span>

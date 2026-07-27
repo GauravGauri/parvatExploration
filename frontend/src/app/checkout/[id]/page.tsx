@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { ShieldCheck, CreditCard, Lock, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
+import { Loader } from '@/components/ui/Loader';
 
 declare global {
   interface Window {
@@ -58,7 +59,7 @@ function CheckoutContent() {
   }, [params.id]);
 
   if (!trip) {
-    return <div className="min-h-screen flex items-center justify-center">Loading trip details...</div>;
+    return <Loader message="Loading trip details..." fullScreen />;
   }
 
   const numericPrice = parseInt(trip.price.replace(/[^0-9]/g, ''), 10) || 0;

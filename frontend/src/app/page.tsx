@@ -7,6 +7,7 @@ import { MapPin, Calendar, Search, Users, ArrowRight, Star } from 'lucide-react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DatePicker } from '@/components/ui/DatePicker';
+import { Loader } from '@/components/ui/Loader';
 import api from '@/lib/api';
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
   const [guests, setGuests] = React.useState('');
 
   const [upcomingTreks, setUpcomingTreks] = React.useState<any[]>([]);
+  const [loadingTreks, setLoadingTreks] = React.useState(true);
 
   React.useEffect(() => {
     const fetchTreks = async () => {
@@ -25,6 +27,8 @@ export default function Home() {
         setUpcomingTreks(data.slice(0, 3).map((t: any) => ({ ...t, id: t._id })));
       } catch (error) {
         console.error('Failed to fetch treks', error);
+      } finally {
+        setLoadingTreks(false);
       }
     };
     fetchTreks();
@@ -162,7 +166,11 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {upcomingTreks.map((trek) => (
+            {loadingTreks ? (
+              <div className="col-span-full">
+                <Loader message="Loading upcoming treks..." />
+              </div>
+            ) : upcomingTreks.map((trek) => (
               <div key={trek.id} className="group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300">
                 <div className="relative h-64 overflow-hidden">
                   <img src={trek.image} alt={trek.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />

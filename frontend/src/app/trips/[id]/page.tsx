@@ -8,6 +8,7 @@ import { MapPin, Calendar, Clock, Mountain, CheckCircle2, XCircle, ChevronDown, 
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import api from '@/lib/api';
+import { Loader } from '@/components/ui/Loader';
 
 export default function TripDetailsPage() {
   const params = useParams();
@@ -36,7 +37,7 @@ export default function TripDetailsPage() {
   }, [params.id]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <Loader message="Loading trip details..." fullScreen />;
   }
 
   if (!trip) {

@@ -6,6 +6,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
 import { CalendarCheck, Users, IndianRupee } from 'lucide-react';
+import { Loader } from '@/components/ui/Loader';
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<any>(null);
@@ -26,7 +27,7 @@ export default function AdminDashboardPage() {
   }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-full">Loading dashboard...</div>;
+    return <Loader message="Loading dashboard..." />;
   }
 
   if (!stats) return null;
