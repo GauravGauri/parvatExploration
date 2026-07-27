@@ -208,7 +208,7 @@ export default function AdminTreksPage() {
               <div>
                 <label className="block text-sm font-semibold text-slate-900 mb-2">Description</label>
                 <textarea
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-500 min-h-[100px]"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 focus:outline-none focus:border-rose-500 min-h-[100px]"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   required
@@ -228,12 +228,20 @@ export default function AdminTreksPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Images (Max 5)</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Images (Max 3)</label>
                     <input
                       type="file"
                       accept="image/*"
                       multiple
-                      onChange={(e) => setGalleryImages(e.target.files)}
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 3) {
+                          toast.error('You can only upload up to 3 gallery images.');
+                          e.target.value = '';
+                          setGalleryImages(null);
+                        } else {
+                          setGalleryImages(e.target.files);
+                        }
+                      }}
                       className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
                     />
                   </div>
