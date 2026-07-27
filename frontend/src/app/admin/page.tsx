@@ -47,7 +47,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </Card>
-        
+
         <Card className="p-6 border-l-4 border-emerald-500">
           <div className="flex justify-between items-start">
             <div>
@@ -68,24 +68,24 @@ export default function AdminDashboardPage() {
             <AreaChart data={stats.chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#e11d48" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#e11d48" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#e11d48" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#e11d48" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis dataKey="name" stroke="#94a3b8" />
               <YAxis stroke="#94a3b8" />
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 labelStyle={{ color: '#0f172a', fontWeight: 'bold' }}
               />
-              <Area 
-                type="monotone" 
-                dataKey="revenue" 
-                stroke="#e11d48" 
+              <Area
+                type="monotone"
+                dataKey="revenue"
+                stroke="#e11d48"
                 strokeWidth={3}
-                fillOpacity={1} 
-                fill="url(#colorRevenue)" 
+                fillOpacity={1}
+                fill="url(#colorRevenue)"
               />
             </AreaChart>
           </ResponsiveContainer>
