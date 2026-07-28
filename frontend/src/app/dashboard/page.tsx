@@ -7,11 +7,15 @@ import { motion } from 'framer-motion';
 import { MapPin, Calendar, Clock, ChevronRight, Settings, LogOut, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import api from '@/lib/api';
+import { Loader } from '@/components/ui/Loader';
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuthStore();
   const [activeTab, setActiveTab] = useState('bookings');
+  const [upcomingBookings, setUpcomingBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -19,19 +23,33 @@ export default function DashboardPage() {
     }
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) return null;
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const { data } = await api.get('/bookings/mybookings');
+        const formattedBookings = data.map((b: any) => ({
+          id: b._id,
+          tripTitle: b.trek?.title || 'Unknown Trek',
+          date: new Date(b.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          guests: b.guests,
+          status: b.paymentStatus,
+          totalPaid: `₹${b.totalAmount.toLocaleString('en-IN')}`,
+          image: b.trek?.image || 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+        }));
+        setUpcomingBookings(formattedBookings);
+      } catch (error) {
+        console.error('Failed to fetch bookings', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const upcomingBookings = [
-    {
-      id: 'BK-7829',
-      tripTitle: 'Kedarkantha Trek',
-      date: 'Jan 15, 2027',
-      guests: 2,
-      status: 'Confirmed',
-      totalPaid: '₹17,850',
-      image: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+    if (isAuthenticated) {
+      fetchBookings();
     }
-  ];
+  }, [isAuthenticated]);
+
+  if (!isAuthenticated) return null;
 
   const handleLogout = () => {
     logout();
@@ -98,7 +116,9 @@ export default function DashboardPage() {
               <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 min-h-[500px]">
                 <h2 className="text-2xl font-bold font-heading text-slate-900 mb-6">Upcoming Trips</h2>
                 
-                {upcomingBookings.length > 0 ? (
+                {loading ? (
+                  <div className="flex justify-center py-12"><Loader message="Loading bookings..." /></div>
+                ) : upcomingBookings.length > 0 ? (
                   <div className="space-y-6">
                     {upcomingBookings.map((booking) => (
                       <div key={booking.id} className="border border-slate-200 rounded-2xl p-4 flex flex-col md:flex-row gap-6">

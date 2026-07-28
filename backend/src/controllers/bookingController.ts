@@ -107,6 +107,20 @@ export const getAllBookings = async (req: Request, res: Response) => {
   }
 };
 
+// @desc    Get logged in user bookings
+// @route   GET /api/bookings/mybookings
+// @access  Private
+export const getMyBookings = async (req: Request, res: Response) => {
+  try {
+    const bookings = await Booking.find({ user: (req as any).user._id })
+      .populate('trek', 'id title image price')
+      .sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // @desc    Get admin stats for dashboard
 // @route   GET /api/bookings/admin/stats
 // @access  Private/Admin
