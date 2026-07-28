@@ -92,7 +92,7 @@ function CheckoutContent() {
 
       // 2. Open Razorpay Modal
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_YourTestKeyHere', // Fallback, must be in env!
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Fallback to test key if env fails
         amount: amount.toString(),
         currency: 'INR',
         name: 'Parvat Exploration',
@@ -107,10 +107,10 @@ function CheckoutContent() {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
             });
-            
+
             setIsSuccess(true);
             toast.success('Payment successful! Booking confirmed.');
-            
+
             setTimeout(() => {
               router.push('/dashboard');
             }, 2000);
@@ -133,7 +133,7 @@ function CheckoutContent() {
       paymentObject.on('payment.failed', function (response: any) {
         toast.error('Payment failed: ' + response.error.description);
       });
-      
+
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to initialize payment');
     } finally {
@@ -163,28 +163,28 @@ function CheckoutContent() {
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 transition-colors font-medium">
           <ArrowLeft className="w-4 h-4" /> Back to Trip Details
         </button>
 
         <div className="flex flex-col lg:flex-row gap-12">
-          
+
           {/* Payment Details */}
           <div className="flex-1">
             <h1 className="text-3xl font-bold font-heading text-slate-900 mb-8">Complete your Booking</h1>
-            
+
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8">
               <h2 className="text-xl font-bold font-heading text-slate-900 mb-6 flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-rose-500" /> Payment Details
               </h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-center gap-2 text-sm text-slate-500 bg-slate-50 p-4 rounded-xl">
                   <Lock className="w-4 h-4 text-emerald-600 shrink-0" />
                   <p>Your payment will be securely processed by Razorpay. Click below to open the payment gateway.</p>
                 </div>
-                
+
                 <Button onClick={displayRazorpay} size="lg" className="w-full h-14 text-lg" isLoading={isProcessing}>
                   Pay ₹{totalAmount.toLocaleString('en-IN')}
                 </Button>
@@ -196,7 +196,7 @@ function CheckoutContent() {
           <div className="w-full lg:w-96 shrink-0">
             <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 sticky top-28">
               <h2 className="text-xl font-bold font-heading text-slate-900 mb-6">Order Summary</h2>
-              
+
               <div className="flex gap-4 mb-6 pb-6 border-b border-slate-100">
                 <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
                   <img src={trip.image} alt={trip.title} className="w-full h-full object-cover" />
