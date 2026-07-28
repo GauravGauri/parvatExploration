@@ -6,12 +6,13 @@ import { connectDB } from './config/db';
 import { configureCloudinary } from './utils/cloudinary';
 
 // Load env variables from .env
-dotenv.config();
+dotenv.config({ override: true });
 
 connectDB();
 configureCloudinary();
 
 const app = express();
+
 
 import authRoutes from './routes/authRoutes';
 import trekRoutes from './routes/trekRoutes';
@@ -36,3 +37,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
+
+export default app;
