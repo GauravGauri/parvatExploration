@@ -46,6 +46,7 @@ export default function AdminBookingsPage() {
                 <th className="p-4 font-semibold text-slate-600">Guests</th>
                 <th className="p-4 font-semibold text-slate-600">Amount</th>
                 <th className="p-4 font-semibold text-slate-600">Status</th>
+                <th className="p-4 font-semibold text-slate-600">Transaction ID</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -67,11 +68,21 @@ export default function AdminBookingsPage() {
                       {b.paymentStatus}
                     </span>
                   </td>
+                  <td className="p-4">
+                    {b.razorpayPaymentId ? (
+                      <div className="flex flex-col">
+                        <span className="text-xs font-mono text-slate-700">{b.razorpayPaymentId}</span>
+                        <span className="text-[10px] font-mono text-slate-400">Order: {b.razorpayOrderId}</span>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-400">N/A</span>
+                    )}
+                  </td>
                 </tr>
               ))}
               {bookings.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500">No bookings found</td>
+                  <td colSpan={8} className="p-8 text-center text-slate-500">No bookings found</td>
                 </tr>
               )}
             </tbody>
