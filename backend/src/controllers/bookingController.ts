@@ -26,7 +26,7 @@ export const addBookingItems = async (req: Request, res: Response) => {
     // Basic price parsing assuming price is like '₹8,500' -> 8500
     const rawPrice = trek.price.replace(/[^0-9]/g, '');
     const unitPrice = parseInt(rawPrice, 10);
-    const totalAmount = unitPrice * guests;
+    const totalAmount = Math.round(unitPrice * guests * 1.05);
 
     // Create a Razorpay order
     const options = {
@@ -55,7 +55,8 @@ export const addBookingItems = async (req: Request, res: Response) => {
       amount: order.amount,
     });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error("Add Booking Error:", error);
+    res.status(500).json({ message: error?.error?.description || error?.description || error.message || 'Internal Server Error' });
   }
 };
 

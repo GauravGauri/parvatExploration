@@ -73,6 +73,11 @@ function CheckoutContent() {
       return;
     }
 
+    if (!date) {
+      toast.error('Please select a date for your trip.');
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
