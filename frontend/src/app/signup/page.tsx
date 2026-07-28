@@ -54,7 +54,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-20 px-4">
-      <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 w-full max-w-md">
+      <div className="bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-slate-100 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold font-heading text-slate-900 mb-2">Create an Account</h1>
           <p className="text-slate-500">Join us to book your next adventure</p>

@@ -64,7 +64,7 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-5xl"
           >
-            <h1 className="text-5xl md:text-7xl font-bold font-heading text-white leading-tight mb-6 tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading text-white leading-tight mb-6 tracking-tight">
               Explore the <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-600">Himalayas</span>
             </h1>
@@ -87,16 +87,16 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 min-w-0 flex items-center gap-3 px-4 py-3 border-b md:border-b-0 md:border-r border-slate-100">
-                <Calendar className="text-rose-500 w-5 h-5" />
+                <Calendar className="text-rose-500 w-5 h-5 shrink-0" />
                 <DatePicker 
                   selected={date} 
                   onSelect={setDate} 
                   placeholder="When?"
-                  className="flex-1"
+                  className="flex-1 min-w-0 w-full"
                 />
               </div>
               <div className="flex-1 min-w-0 flex items-center gap-3 px-4 py-3">
-                <Users className="text-rose-500 w-5 h-5" />
+                <Users className="text-rose-500 w-5 h-5 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Guests</span>
                   <input 
@@ -253,8 +253,8 @@ export default function Home() {
             <h2 className="text-4xl font-bold font-heading text-slate-900 mb-4">What Our Trekkers Say</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">Don't just take our word for it. Here's what our community of adventurers has to say about their experiences.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-100">
               <div className="flex text-yellow-500 mb-4">
                 <Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" />
               </div>
@@ -267,7 +267,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+            <div className="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-100">
               <div className="flex text-yellow-500 mb-4">
                 <Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" />
               </div>
@@ -280,7 +280,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hidden lg:block">
+            <div className="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-100 hidden lg:block">
               <div className="flex text-yellow-500 mb-4">
                 <Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" /><Star className="w-5 h-5 fill-yellow-500" />
               </div>

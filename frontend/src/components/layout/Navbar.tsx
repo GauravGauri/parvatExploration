@@ -44,10 +44,10 @@ export function Navbar() {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isHome && !isScrolled ? 'bg-white text-rose-600' : 'bg-rose-600 text-white'}`}>
+              <div className={`w-8 h-8 shrink-0 rounded-lg flex items-center justify-center ${isHome && !isScrolled ? 'bg-white text-rose-600' : 'bg-rose-600 text-white'}`}>
                 <span className="font-bold text-xl font-heading">P</span>
               </div>
-              <span className="font-heading font-bold text-xl tracking-tight">Parvat<span className={isHome && !isScrolled ? 'text-rose-300' : 'text-rose-600'}>Exploration</span></span>
+              <span className="font-heading font-bold text-lg sm:text-xl tracking-tight truncate">Parvat<span className={isHome && !isScrolled ? 'text-rose-300' : 'text-rose-600'}>Exploration</span></span>
             </Link>
           </div>
 

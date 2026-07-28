@@ -10,10 +10,10 @@ export function Footer() {
           {/* Brand & About */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-white">
-                <span className="font-bold text-xl font-heading">S</span>
+              <div className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-white shrink-0">
+                <span className="font-bold text-xl font-heading">P</span>
               </div>
-              <span className="font-heading font-bold text-xl text-white tracking-tight">Summit<span className="text-rose-500">Seekers</span></span>
+              <span className="font-heading font-bold text-xl text-white tracking-tight">Parvat<span className="text-rose-500">Exploration</span></span>
             </div>
             <p className="text-sm leading-relaxed opacity-80">
               Your gateway to pristine Himalayan adventures. Safe, sustainable, and unforgettable trekking experiences led by certified mountaineers.

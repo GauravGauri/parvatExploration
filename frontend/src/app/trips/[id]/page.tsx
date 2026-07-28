@@ -58,7 +58,7 @@ export default function TripDetailsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Image Gallery */}
-      <div className="h-[50vh] md:h-[60vh] flex gap-2 p-2">
+      <div className="h-[35vh] md:h-[60vh] flex gap-2 p-2">
         <div className="w-full md:w-2/3 h-full rounded-2xl overflow-hidden relative">
           <img src={trip.image} alt={trip.title} className="w-full h-full object-cover" />
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-slate-900 flex items-center gap-1.5 shadow-sm">
@@ -177,7 +177,7 @@ export default function TripDetailsPage() {
 
           {/* Booking Sidebar */}
           <div className="w-full lg:w-96 shrink-0 relative">
-            <div className="bg-white border border-slate-200 shadow-xl rounded-3xl p-6 sticky top-28">
+            <div className="bg-white border border-slate-200 shadow-xl rounded-3xl p-6 lg:sticky top-28 mt-8 lg:mt-0">
               <div className="mb-6">
                 <span className="text-3xl font-bold text-slate-900">{trip.price}</span>
                 <span className="text-slate-500"> / person</span>

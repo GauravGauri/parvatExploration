@@ -43,7 +43,7 @@ export default function LoginPage() {
       if (user.role === 'admin') {
         router.push('/admin');
       } else {
-        router.push('/dashboard');
+        router.push('/');
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to login');
@@ -52,7 +52,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-20 px-4">
-      <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 w-full max-w-md">
+      <div className="bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-slate-100 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-rose-600 rounded-xl flex items-center justify-center text-white mx-auto mb-4">
             <span className="font-bold text-2xl font-heading">P</span>

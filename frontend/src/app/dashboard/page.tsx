@@ -12,19 +12,20 @@ import { Loader } from '@/components/ui/Loader';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated, logout, _hasHydrated } = useAuthStore();
   const [activeTab, setActiveTab] = useState('bookings');
   const [upcomingBookings, setUpcomingBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (_hasHydrated && !isAuthenticated) {
       router.push('/login');
     }
-  }, [isAuthenticated, router]);
+  }, [_hasHydrated, isAuthenticated, router]);
 
   useEffect(() => {
     const fetchBookings = async () => {
+
       try {
         const { data } = await api.get('/bookings/mybookings');
         const formattedBookings = data.map((b: any) => ({
@@ -49,6 +50,7 @@ export default function DashboardPage() {
     }
   }, [isAuthenticated]);
 
+  if (!_hasHydrated) return <div className="flex justify-center py-20"><Loader message="Loading dashboard..." /></div>;
   if (!isAuthenticated) return null;
 
   const handleLogout = () => {
