@@ -100,14 +100,10 @@ export default function AdminTreksPage() {
 
     try {
       if (editingTrek) {
-        await api.put(`/treks/${editingTrek._id}`, data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.put(`/treks/${editingTrek._id}`, data);
         toast.success('Trek updated successfully');
       } else {
-        await api.post('/treks', data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.post('/treks', data);
         toast.success('Trek created successfully');
       }
       setIsModalOpen(false);
