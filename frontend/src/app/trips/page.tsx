@@ -23,8 +23,8 @@ function TripsContent() {
     const fetchTrips = async () => {
       try {
         const { data } = await api.get('/treks');
-        // Map _id to id for existing frontend logic
-        const tripsWithId = data.map((t: any) => ({ ...t, id: t._id }));
+        const futureTreks = data.filter((t: any) => t.date && new Date(t.date) >= new Date());
+        const tripsWithId = futureTreks.map((t: any) => ({ ...t, id: t._id }));
         setAllTrips(tripsWithId);
       } catch (error) {
         console.error('Failed to fetch trips', error);

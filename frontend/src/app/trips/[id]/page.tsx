@@ -5,15 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { MapPin, Calendar, Clock, Mountain, CheckCircle2, XCircle, ChevronDown, ChevronUp, Star, Users } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/style.css';
 import api from '@/lib/api';
 import { Loader } from '@/components/ui/Loader';
 
 export default function TripDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState<Date>();
   const [guests, setGuests] = useState(1);
   const [activeItineraryDay, setActiveItineraryDay] = useState<number | null>(1);
 
@@ -48,11 +45,7 @@ export default function TripDetailsPage() {
   const numericPrice = parseInt(trip.price.replace(/[^0-9]/g, ''), 10) || 0;
 
   const handleBookNow = () => {
-    if (!selectedDate) {
-      alert("Please select a date first");
-      return;
-    }
-    router.push(`/checkout/${trip._id}?date=${selectedDate.toISOString()}&guests=${guests}`);
+    router.push(`/checkout/${trip._id}?date=${new Date(trip.date).toISOString()}&guests=${guests}`);
   };
 
   return (
@@ -160,16 +153,17 @@ export default function TripDetailsPage() {
               <div>
                 <h2 className="text-2xl font-bold font-heading text-slate-900 mb-6">Inclusions</h2>
                 <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-slate-600"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" /><span>Accommodation in tents/homestays</span></li>
-                  <li className="flex items-start gap-3 text-slate-600"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" /><span>All meals during the trek</span></li>
-                  <li className="flex items-start gap-3 text-slate-600"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" /><span>Trekking permits</span></li>
+                  {(trip.inclusions && trip.inclusions.length > 0 ? trip.inclusions : ['Accommodation in tents/homestays', 'All meals during the trek', 'Trekking permits']).map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3 text-slate-600"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" /><span>{item}</span></li>
+                  ))}
                 </ul>
               </div>
               <div>
                 <h2 className="text-2xl font-bold font-heading text-slate-900 mb-6">Exclusions</h2>
                 <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-slate-600"><XCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" /><span>Transport to base camp</span></li>
-                  <li className="flex items-start gap-3 text-slate-600"><XCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" /><span>Offloading of backpack</span></li>
+                  {(trip.exclusions && trip.exclusions.length > 0 ? trip.exclusions : ['Transport to base camp', 'Offloading of backpack']).map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3 text-slate-600"><XCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" /><span>{item}</span></li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -185,35 +179,15 @@ export default function TripDetailsPage() {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-3">Select Date</label>
-                  <div className="border border-slate-200 rounded-2xl p-4 flex justify-center bg-slate-50">
-                    <DayPicker 
-                      mode="single" 
-                      selected={selectedDate} 
-                      onSelect={setSelectedDate}
-                      disabled={{ before: new Date() }}
-                      classNames={{
-                        root: 'rdp-root !m-0 !text-slate-900',
-                        months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
-                        month: 'space-y-4',
-                        month_caption: 'flex justify-center pt-1 relative items-center h-10',
-                        caption_label: 'text-sm font-bold text-slate-900',
-                        nav: 'space-x-1 flex items-center',
-                        button_previous: 'absolute left-1 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 transition-opacity',
-                        button_next: 'absolute right-1 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 transition-opacity',
-                        month_grid: 'w-full border-collapse space-y-1',
-                        weekdays: 'flex',
-                        weekday: 'text-slate-400 rounded-md w-9 font-normal text-[0.8rem] text-center',
-                        week: 'flex w-full mt-2',
-                        day: 'h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20',
-                        day_button: 'h-9 w-9 p-0 font-normal !text-slate-900 aria-selected:opacity-100 hover:bg-rose-50 rounded-lg transition-colors flex items-center justify-center',
-                        selected: 'bg-rose-600 !text-white hover:bg-rose-700 hover:text-white focus:bg-rose-600 focus:text-white rounded-lg',
-                        today: 'text-rose-600 font-bold underline decoration-2 underline-offset-4',
-                        outside: 'day-outside text-slate-400 opacity-50 aria-selected:bg-slate-100/50 aria-selected:text-slate-400 aria-selected:opacity-30',
-                        disabled: 'text-slate-300 opacity-50',
-                        hidden: 'invisible',
-                      }}
-                    />
+                  <label className="block text-sm font-semibold text-slate-900 mb-3">Trek Date</label>
+                  <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+                      <Calendar className="w-5 h-5 text-rose-600" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900">{trip.date ? new Date(trip.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }) : 'Date not set'}</p>
+                      <p className="text-xs text-slate-500">Fixed departure</p>
+                    </div>
                   </div>
                 </div>
 

@@ -17,8 +17,9 @@ export default function AdminTreksPage() {
 
   // Form State
   const [formData, setFormData] = useState({
-    title: '', price: '', days: '', diff: '', category: '', description: ''
+    title: '', price: '', days: '', diff: '', category: '', description: '', date: '', inclusions: '', exclusions: ''
   });
+  const [itinerary, setItinerary] = useState([{ day: 1, title: '', details: '' }]);
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [galleryImage1, setGalleryImage1] = useState<File | null>(null);
   const [galleryImage2, setGalleryImage2] = useState<File | null>(null);
@@ -60,10 +61,15 @@ export default function AdminTreksPage() {
         days: trek.days,
         diff: trek.diff,
         category: trek.category,
-        description: trek.description || ''
+        description: trek.description || '',
+        date: trek.date ? new Date(trek.date).toISOString().split('T')[0] : '',
+        inclusions: trek.inclusions ? trek.inclusions.join('\n') : '',
+        exclusions: trek.exclusions ? trek.exclusions.join('\n') : ''
       });
+      setItinerary(trek.itinerary && trek.itinerary.length > 0 ? trek.itinerary : [{ day: 1, title: '', details: '' }]);
     } else {
-      setFormData({ title: '', price: '', days: '', diff: '', category: '', description: '' });
+      setFormData({ title: '', price: '', days: '', diff: '', category: '', description: '', date: '', inclusions: '', exclusions: '' });
+      setItinerary([{ day: 1, title: '', details: '' }]);
     }
     setMainImage(null);
     setGalleryImage1(null);
@@ -77,7 +83,15 @@ export default function AdminTreksPage() {
     setSubmitting(true);
 
     const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => data.append(key, value));
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'inclusions' || key === 'exclusions') {
+        const arr = (value as string).split('\n').filter(s => s.trim() !== '');
+        data.append(key, JSON.stringify(arr));
+      } else {
+        data.append(key, value as string);
+      }
+    });
+    data.append('itinerary', JSON.stringify(itinerary));
 
     if (mainImage) data.append('image', mainImage);
     if (galleryImage1) data.append('images', galleryImage1);
@@ -125,18 +139,22 @@ export default function AdminTreksPage() {
               <tr>
                 <th className="p-4 font-semibold text-slate-600">Image</th>
                 <th className="p-4 font-semibold text-slate-600">Title</th>
+                <th className="p-4 font-semibold text-slate-600">Date</th>
                 <th className="p-4 font-semibold text-slate-600">Price</th>
                 <th className="p-4 font-semibold text-slate-600">Duration</th>
                 <th className="p-4 font-semibold text-slate-600 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {treks.map((t) => (
-                <tr key={t._id} className="hover:bg-slate-50/50">
+              {treks.map((t) => {
+                const isPast = t.date && new Date(t.date) < new Date();
+                return (
+                <tr key={t._id} className={`hover:bg-slate-50/50 ${isPast ? 'opacity-50' : ''}`}>
                   <td className="p-4">
                     <img src={t.image} alt={t.title} className="w-12 h-12 rounded-lg object-cover" />
                   </td>
                   <td className="p-4 font-medium text-slate-900">{t.title}</td>
+                  <td className="p-4 text-slate-600">{t.date ? new Date(t.date).toLocaleDateString() : 'N/A'}</td>
                   <td className="p-4 text-slate-600">{t.price}</td>
                   <td className="p-4 text-slate-600">{t.days}</td>
                   <td className="p-4 text-right">
@@ -155,7 +173,8 @@ export default function AdminTreksPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -173,12 +192,24 @@ export default function AdminTreksPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <Input
-                label="Trek Title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                required
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Trek Title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  required
+                />
+                <div className="flex flex-col">
+                  <label className="mb-1 text-sm font-semibold text-slate-900">Date</label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 focus:outline-none focus:border-rose-500"
+                    value={formData.date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <Input
@@ -218,6 +249,81 @@ export default function AdminTreksPage() {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   required
                 ></textarea>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Inclusions (One per line)</label>
+                  <textarea
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 focus:outline-none focus:border-rose-500 min-h-[100px]"
+                    value={formData.inclusions}
+                    onChange={(e) => setFormData({ ...formData, inclusions: e.target.value })}
+                  ></textarea>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Exclusions (One per line)</label>
+                  <textarea
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 focus:outline-none focus:border-rose-500 min-h-[100px]"
+                    value={formData.exclusions}
+                    onChange={(e) => setFormData({ ...formData, exclusions: e.target.value })}
+                  ></textarea>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-100 pt-4 mt-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-semibold text-slate-900">Itinerary</h3>
+                  <Button type="button" variant="outline" size="sm" onClick={() => setItinerary([...itinerary, { day: itinerary.length + 1, title: '', details: '' }])}>
+                    <Plus className="w-4 h-4 mr-1" /> Add Day
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {itinerary.map((day, index) => (
+                    <div key={index} className="border border-slate-200 p-4 rounded-xl relative">
+                      <button 
+                        type="button" 
+                        onClick={() => setItinerary(itinerary.filter((_, i) => i !== index))}
+                        className="absolute top-2 right-2 text-slate-400 hover:text-rose-500"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                      <div className="grid grid-cols-[80px_1fr] gap-4 mb-2">
+                        <Input
+                          label="Day"
+                          type="number"
+                          value={day.day.toString()}
+                          onChange={(e) => {
+                            const newItin = [...itinerary];
+                            newItin[index].day = parseInt(e.target.value) || 0;
+                            setItinerary(newItin);
+                          }}
+                          required
+                        />
+                        <Input
+                          label="Title"
+                          value={day.title}
+                          onChange={(e) => {
+                            const newItin = [...itinerary];
+                            newItin[index].title = e.target.value;
+                            setItinerary(newItin);
+                          }}
+                          required
+                        />
+                      </div>
+                      <textarea
+                        className="w-full px-4 py-2 text-sm rounded-xl border border-slate-200 text-slate-900 focus:outline-none focus:border-rose-500"
+                        placeholder="Day details..."
+                        value={day.details}
+                        onChange={(e) => {
+                          const newItin = [...itinerary];
+                          newItin[index].details = e.target.value;
+                          setItinerary(newItin);
+                        }}
+                        required
+                      ></textarea>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="border-t border-slate-100 pt-4 mt-4">

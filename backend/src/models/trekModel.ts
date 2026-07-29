@@ -11,6 +11,9 @@ const trekSchema = new mongoose.Schema(
     diff: { type: String, required: true }, // Difficulty
     category: { type: String, required: true },
     description: { type: String },
+    date: { type: Date, required: true },
+    inclusions: [{ type: String }],
+    exclusions: [{ type: String }],
     itinerary: [
       {
         day: Number,

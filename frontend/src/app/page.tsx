@@ -23,8 +23,9 @@ export default function Home() {
     const fetchTreks = async () => {
       try {
         const { data } = await api.get('/treks');
-        // Get the first 3 treks for the homepage, map _id to id
-        setUpcomingTreks(data.slice(0, 3).map((t: any) => ({ ...t, id: t._id })));
+        const futureTreks = data.filter((t: any) => t.date && new Date(t.date) >= new Date());
+        // Get the first 3 future treks for the homepage, map _id to id
+        setUpcomingTreks(futureTreks.slice(0, 3).map((t: any) => ({ ...t, id: t._id })));
       } catch (error) {
         console.error('Failed to fetch treks', error);
       } finally {

@@ -37,7 +37,7 @@ import { uploadToCloudinary } from '../utils/cloudinary';
 // @access  Private/Admin
 export const createTrek = async (req: Request, res: Response) => {
   try {
-    const { title, price, days, rating, diff, category, description, itinerary } = req.body;
+    const { title, price, days, rating, diff, category, description, date, inclusions, exclusions, itinerary } = req.body;
     
     let mainImageUrl = '';
     let additionalImageUrls: string[] = [];
@@ -65,6 +65,9 @@ export const createTrek = async (req: Request, res: Response) => {
       diff,
       category,
       description,
+      date: new Date(date),
+      inclusions: inclusions ? JSON.parse(inclusions) : [],
+      exclusions: exclusions ? JSON.parse(exclusions) : [],
       itinerary: itinerary ? JSON.parse(itinerary) : []
     });
 
@@ -80,7 +83,7 @@ export const createTrek = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const updateTrek = async (req: Request, res: Response) => {
   try {
-    const { title, price, days, rating, diff, category, description, itinerary } = req.body;
+    const { title, price, days, rating, diff, category, description, date, inclusions, exclusions, itinerary } = req.body;
     const trek = await Trek.findById(req.params.id);
 
     if (!trek) {
@@ -112,6 +115,9 @@ export const updateTrek = async (req: Request, res: Response) => {
     trek.diff = diff || trek.diff;
     trek.category = category || trek.category;
     trek.description = description || trek.description;
+    if (date) trek.date = new Date(date);
+    if (inclusions) trek.inclusions = JSON.parse(inclusions);
+    if (exclusions) trek.exclusions = JSON.parse(exclusions);
     trek.itinerary = itinerary ? JSON.parse(itinerary) : trek.itinerary;
 
     const updatedTrek = await trek.save();
