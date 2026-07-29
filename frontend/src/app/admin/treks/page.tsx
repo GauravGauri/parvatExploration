@@ -24,6 +24,12 @@ export default function AdminTreksPage() {
   const [galleryImage1, setGalleryImage1] = useState<File | null>(null);
   const [galleryImage2, setGalleryImage2] = useState<File | null>(null);
   const [galleryImage3, setGalleryImage3] = useState<File | null>(null);
+  
+  const [imageLink, setImageLink] = useState('');
+  const [galleryImage1Link, setGalleryImage1Link] = useState('');
+  const [galleryImage2Link, setGalleryImage2Link] = useState('');
+  const [galleryImage3Link, setGalleryImage3Link] = useState('');
+
   const [submitting, setSubmitting] = useState(false);
 
   const fetchTreks = async () => {
@@ -75,6 +81,10 @@ export default function AdminTreksPage() {
     setGalleryImage1(null);
     setGalleryImage2(null);
     setGalleryImage3(null);
+    setImageLink('');
+    setGalleryImage1Link('');
+    setGalleryImage2Link('');
+    setGalleryImage3Link('');
     setIsModalOpen(true);
   };
 
@@ -97,6 +107,11 @@ export default function AdminTreksPage() {
     if (galleryImage1) data.append('images', galleryImage1);
     if (galleryImage2) data.append('images', galleryImage2);
     if (galleryImage3) data.append('images', galleryImage3);
+
+    if (imageLink) data.append('imageLink', imageLink);
+    if (galleryImage1Link) data.append('imagesLinks', galleryImage1Link);
+    if (galleryImage2Link) data.append('imagesLinks', galleryImage2Link);
+    if (galleryImage3Link) data.append('imagesLinks', galleryImage3Link);
 
     try {
       if (editingTrek) {
@@ -326,40 +341,68 @@ export default function AdminTreksPage() {
                 <h3 className="font-semibold mb-4 text-slate-900">Images</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Main Cover Image (Required for new)</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setMainImage(e.target.files?.[0] || null)}
-                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
-                    />
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Main Cover Image</label>
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setMainImage(e.target.files?.[0] || null)}
+                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                      />
+                      <Input 
+                        placeholder="OR paste Image URL here" 
+                        value={imageLink} 
+                        onChange={(e) => setImageLink(e.target.value)} 
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Image 1</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setGalleryImage1(e.target.files?.[0] || null)}
-                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
-                    />
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setGalleryImage1(e.target.files?.[0] || null)}
+                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                      />
+                      <Input 
+                        placeholder="OR paste Image URL here" 
+                        value={galleryImage1Link} 
+                        onChange={(e) => setGalleryImage1Link(e.target.value)} 
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Image 2</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setGalleryImage2(e.target.files?.[0] || null)}
-                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
-                    />
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setGalleryImage2(e.target.files?.[0] || null)}
+                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                      />
+                      <Input 
+                        placeholder="OR paste Image URL here" 
+                        value={galleryImage2Link} 
+                        onChange={(e) => setGalleryImage2Link(e.target.value)} 
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Gallery Image 3</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setGalleryImage3(e.target.files?.[0] || null)}
-                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
-                    />
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setGalleryImage3(e.target.files?.[0] || null)}
+                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                      />
+                      <Input 
+                        placeholder="OR paste Image URL here" 
+                        value={galleryImage3Link} 
+                        onChange={(e) => setGalleryImage3Link(e.target.value)} 
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

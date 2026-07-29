@@ -37,10 +37,18 @@ import { uploadToCloudinary } from '../utils/cloudinary';
 // @access  Private/Admin
 export const createTrek = async (req: Request, res: Response) => {
   try {
-    const { title, price, days, rating, diff, category, description, date, inclusions, exclusions, itinerary } = req.body;
+    const { title, price, days, rating, diff, category, description, date, inclusions, exclusions, itinerary, imageLink, imagesLinks } = req.body;
     
-    let mainImageUrl = '';
+    let mainImageUrl = imageLink || '';
     let additionalImageUrls: string[] = [];
+
+    if (imagesLinks) {
+      if (Array.isArray(imagesLinks)) {
+        additionalImageUrls.push(...imagesLinks);
+      } else {
+        additionalImageUrls.push(imagesLinks);
+      }
+    }
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     
@@ -83,15 +91,23 @@ export const createTrek = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const updateTrek = async (req: Request, res: Response) => {
   try {
-    const { title, price, days, rating, diff, category, description, date, inclusions, exclusions, itinerary } = req.body;
+    const { title, price, days, rating, diff, category, description, date, inclusions, exclusions, itinerary, imageLink, imagesLinks } = req.body;
     const trek = await Trek.findById(req.params.id);
 
     if (!trek) {
       return res.status(404).json({ message: 'Trek not found' });
     }
 
-    let mainImageUrl = trek.image;
+    let mainImageUrl = imageLink || trek.image;
     let additionalImageUrls = trek.images;
+
+    if (imagesLinks) {
+      if (Array.isArray(imagesLinks)) {
+        additionalImageUrls = [...additionalImageUrls, ...imagesLinks];
+      } else {
+        additionalImageUrls.push(imagesLinks);
+      }
+    }
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     
